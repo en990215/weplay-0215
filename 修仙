@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>WePlay 修仙程式</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at center, #0e0e1a, #000);
+      color: #fff;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      text-shadow: 0 0 15px #00f0ff;
+    }
+    .sub-header {
+      font-family: 'Segoe Script', 'Cursive', sans-serif;
+      font-size: 18px;
+      color: #77eaff;
+    }
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .card {
+      background: linear-gradient(145deg, #1a1a2e, #16213e);
+      border: 1px solid #00ffff88;
+      border-radius: 15px;
+      width: 140px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #00f0ff;
+    }
+    #popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1a1a2e;
+      border: 2px solid #00ffff99;
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      text-align: center;
+      z-index: 999;
+    }
+    input, button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: #111;
+      color: #fff;
+      border: 1px solid #00ffff88;
+      border-radius: 5px;
+    }
+    @media (max-width: 500px) {
+      .card {
+        width: 100px;
+        height: 80px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    🐉 修仙助手系統
+    <div class="sub-header">𝓓𝓛𝓝𝓗 · 靈域降臨</div>
+  </header>
+
+  <section class="menu">
+    <div class="card" onclick="openCrystal()">結晶倒數</div>
+    <div class="card">靈泉輪空</div>
+    <div class="card">戰力計算</div>
+    <div class="card">修煉進度</div>
+    <div class="card">每日提醒</div>
+    <div class="card">特效展示</div>
+    <div class="card">角色資訊</div>
+    <div class="card">裝置切換</div>
+  </section>
+
+  <!-- 彈出視窗 -->
+  <div id="popup">
+    <h3>設定結晶時間（分鐘）</h3>
+    <input type="number" id="timeInput" placeholder="輸入幾分鐘" min="1">
+    <button onclick="startCountdown()">開始倒數</button>
+    <div id="countdownText" style="margin-top:10px;"></div>
+    <button onclick="closePopup()">關閉</button>
+  </div>
+
+  <script>
+    let countdownTimer = null;
+    let isCounting = false;
+
+    function openCrystal() {
+      document.getElementById("popup").style.display = "block";
+      document.getElementById("timeInput").value = '';
+      document.getElementById("countdownText").innerText = '';
+      isCounting = false;
+      clearInterval(countdownTimer);
+    }
+
+    function closePopup() {
+      clearInterval(countdownTimer);
+      document.getElementById("popup").style.display = "none";
+      document.getElementById("countdownText").innerText = '';
+      isCounting = false;
+    }
+
+    function startCountdown() {
+      if (isCounting) return; // 防止重複啟動
+
+      const input = document.getElementById("timeInput").value;
+      let seconds = parseInt(input) * 60;
+
+      if (!input || isNaN(input) || input <= 0) {
+        alert("請輸入有效分鐘數！");
+        return;
+      }
+
+      isCounting = true;
+
+      countdownTimer = setInterval(() => {
+        if (seconds <= 0) {
+          clearInterval(countdownTimer);
+          document.getElementById("countdownText").innerText = "✨ 結晶完成！";
+          isCounting = false;
+          return;
+        }
+
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        document.getElementById("countdownText").innerText =
+          `剩餘時間：${mins}分 ${secs}秒`;
+
+        seconds--;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
