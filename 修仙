@@ -17,7 +17,7 @@
       text-shadow: 0 0 15px #00f0ff;
     }
     .sub-header {
-      font-family: 'Segoe Script', 'Cursive', sans-serif;
+      font-family: 'Cursive';
       font-size: 18px;
       color: #77eaff;
     }
@@ -66,13 +66,6 @@
       border: 1px solid #00ffff88;
       border-radius: 5px;
     }
-    @media (max-width: 500px) {
-      .card {
-        width: 100px;
-        height: 80px;
-        font-size: 14px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -80,7 +73,6 @@
     🐉 修仙助手系統
     <div class="sub-header">𝓓𝓛𝓝𝓗 · 靈域降臨</div>
   </header>
-
   <section class="menu">
     <div class="card" onclick="openCrystal()">結晶倒數</div>
     <div class="card">靈泉輪空</div>
@@ -95,49 +87,40 @@
   <!-- 彈出視窗 -->
   <div id="popup">
     <h3>設定結晶時間（分鐘）</h3>
-    <input type="number" id="timeInput" placeholder="輸入幾分鐘" min="1">
+    <input type="number" id="timeInput" placeholder="輸入幾分鐘">
     <button onclick="startCountdown()">開始倒數</button>
     <div id="countdownText" style="margin-top:10px;"></div>
     <button onclick="closePopup()">關閉</button>
   </div>
 
   <script>
-    let countdownTimer = null;
-    let isCounting = false;
+    let countdownTimer;
 
     function openCrystal() {
       document.getElementById("popup").style.display = "block";
-      document.getElementById("timeInput").value = '';
-      document.getElementById("countdownText").innerText = '';
-      isCounting = false;
-      clearInterval(countdownTimer);
     }
 
     function closePopup() {
       clearInterval(countdownTimer);
       document.getElementById("popup").style.display = "none";
       document.getElementById("countdownText").innerText = '';
-      isCounting = false;
     }
 
     function startCountdown() {
-      if (isCounting) return; // 防止重複啟動
-
       const input = document.getElementById("timeInput").value;
-      let seconds = parseInt(input) * 60;
+      let seconds = input * 60;
 
       if (!input || isNaN(input) || input <= 0) {
         alert("請輸入有效分鐘數！");
         return;
       }
 
-      isCounting = true;
+      clearInterval(countdownTimer);
 
       countdownTimer = setInterval(() => {
         if (seconds <= 0) {
           clearInterval(countdownTimer);
           document.getElementById("countdownText").innerText = "✨ 結晶完成！";
-          isCounting = false;
           return;
         }
 
